@@ -1,7 +1,6 @@
 import pandas as pd
 import dash
 from dash import dcc
-import dash_bootstrap_components as dbc
 from dash import html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
@@ -243,7 +242,6 @@ def select_graph(value):
 
     return fig      
 
-    # This sets the server ip and port. As well as enables debugging, which is needed to force reload when feather files change
 if __name__ == '__main__':
     app.run_server(debug=True)
 
