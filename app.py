@@ -19,8 +19,14 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id='dropdown',
                 options=[
-                    {'label': '2021 January - August', 'value': '2021JA'},
-                    {'label': '2021 August - Decemeber', 'value': '2021AD'},
+                    {'label': '2021 January - August All', 'value': '2021JA'},
+                    {'label': '2021 January - August Mean', 'value': '2021JAMean'},
+                    {'label': '2021 January - August Median', 'value': '2021JAMedian'},
+                    {'label': '2021 January - August Outer Shell', 'value': '2021JAOuter'},
+                    {'label': '2021 August - Decemeber All', 'value': '2021AD'},
+                    {'label': '2021 August - Decemeber Mean', 'value': '2021ADMean'},
+                    {'label': '2021 August - Decemeber Median', 'value': '2021ADMedian'},
+                    {'label': '2021 August - Decemeber Outer Shell', 'value': '2021ADOuter'},
                     {'label': '2022 April - September All', 'value': '2022AS'},
                     {'label': '2022 April - September Mean', 'value': '2022ASMean'},
                     {'label': '2022 April - September Median', 'value': '2022ASMedian'},
@@ -49,14 +55,48 @@ app.layout = html.Div(children=[
 )
 def select_graph(value):
     if value == '2021JA':
+        check = True
+        df = pd.read_feather('data/outputs/2021 Output/2021_1_8_Mean.ftr')
+        df2 = pd.read_feather('data/outputs/2021 Output/2021_1_8_Median.ftr')
+        df3 = pd.read_feather('data/outputs/2021 Output/2021_1_8_Outer.ftr')
+        title = '2021 Nelson Model All January - August vs Precipitation'
+
+    elif value == '2021JAMean':
         check = False
-        df = pd.read_feather('data/outputs/2021 Output/output_2021_1_8.ftr')
-        title = '2021 Nelson Model June - August vs Precipitation'
+        df = pd.read_feather('data/outputs/2021 Output/2021_1_8_Mean.ftr')
+        title = '2021 Nelson Model Mean January - August vs Precipitation'
+
+    elif value == '2021JAMedian':
+        check = False
+        df = pd.read_feather('data/outputs/2021 Output/2021_1_8_Median.ftr')
+        title = '2021 Nelson Model Median January - August vs Precipitation'
+
+    elif value == '2021JAOuter':
+        check = False
+        df = pd.read_feather('data/outputs/2021 Output/2021_1_8_Outer.ftr')
+        title = '2021 Nelson Model Outer January - August vs Precipitation'
 
     elif value == '2021AD':
+        check = True
+        df = pd.read_feather('data/outputs/2021 Output/2021_8_12_Mean.ftr')
+        df2 = pd.read_feather('data/outputs/2021 Output/2021_8_12_Median.ftr')
+        df3 = pd.read_feather('data/outputs/2021 Output/2021_8_12_Outer.ftr')
+        title = '2021 Nelson Model All August - December vs Precipitation'
+
+    elif value == '2021ADMean':
         check = False
-        df = pd.read_feather('data/outputs/2021 Output/output_2021_8_12.ftr')
-        title = '2021 Nelson Model August - December vs Precipitation'
+        df = pd.read_feather('data/outputs/2021 Output/2021_8_12_Mean.ftr')
+        title = '2021 Nelson Model Mean August - December vs Precipitation'
+
+    elif value == '2021ADMedian':
+        check = False
+        df = pd.read_feather('data/outputs/2021 Output/2021_8_12_Median.ftr')
+        title = '2021 Nelson Model Median August - December vs Precipitation'
+
+    elif value == '2021ADOuter':
+        check = False
+        df = pd.read_feather('data/outputs/2021 Output/2021_8_12_Outer.ftr')
+        title = '2021 Nelson Model Outer August - December vs Precipitation'
     
     elif value == '2022AS':
         check = True
