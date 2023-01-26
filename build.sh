@@ -1,0 +1,1 @@
+docker build --tag nelson_model_dashboard .
