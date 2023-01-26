@@ -12,7 +12,7 @@ app = dash.Dash(__name__, suppress_callback_exceptions=True)
 
 #This is the first layer of HTML elements
 app.layout = html.Div(children=[
-    html.H1(children='Nelson Model Test Results', style={'text-align': 'center'}),
+    html.H1(children='Blue Mountain RAWS Nelson Model Test Results', style={'text-align': 'center'}),
 
     html.Br(), html.Br(),
             html.Label(['Choose a graph:'],style={'font-weight': 'bold'}),
