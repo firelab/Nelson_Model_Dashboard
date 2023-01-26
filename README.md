@@ -10,4 +10,4 @@ Running Nelson Model Dashboard with Docker
 Running Nelson Model Dashboard without Docker
 
     You must first install all the dependencies by running 'pip install -r requirements.txt'
-    Then to start the web app run 'python3 app.py' (this file starts the flask app and automatic RAWS location collection)
+    Then to start the web app run 'python3 app.py' 
