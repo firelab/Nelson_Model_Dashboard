@@ -19,6 +19,8 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id='dropdown',
                 options=[
+                    {'label': '2021 Hotspots January - August', 'value': 'HS2021JA'},
+                    {'label': '2021 Hotspots August - Decemeber', 'value': 'HS2021AD'},
                     {'label': '2021 January - August', 'value': '2021JA'},
                     {'label': '2021 August - Decemeber', 'value': '2021AD'},
                     {'label': '2022 April - September', 'value': '2022AS'},
@@ -41,108 +43,195 @@ def select_graph(value):
         df = pd.read_feather('data/outputs/2021 Output/2021_1_8_Mean.ftr')
         df2 = pd.read_feather('data/outputs/2021 Output/2021_1_8_Median.ftr')
         df3 = pd.read_feather('data/outputs/2021 Output/2021_1_8_Outer.ftr')
-        title = '2021 Nelson Model All January - August vs Precipitation'
+        title = '2021 Nelson Model January - August vs Precipitation'
 
     elif value == '2021AD':
         check = True
         df = pd.read_feather('data/outputs/2021 Output/2021_8_12_Mean.ftr')
         df2 = pd.read_feather('data/outputs/2021 Output/2021_8_12_Median.ftr')
         df3 = pd.read_feather('data/outputs/2021 Output/2021_8_12_Outer.ftr')
-        title = '2021 Nelson Model All August - December vs Precipitation'
+        title = '2021 Nelson Model August - December vs Precipitation'
     
     elif value == '2022AS':
         check = True
         df = pd.read_feather('data/outputs/April-Sept Output/output_mean_AS.ftr')
         df2 = pd.read_feather('data/outputs/April-Sept Output/output_median_AS.ftr')
         df3 = pd.read_feather('data/outputs/April-Sept Output/output_outer_AS.ftr')
-        title = '2022 Nelson Model All April - September vs Precipitation'
+        title = '2022 Nelson Model April - September vs Precipitation'
 
     elif value == '2022JS':
         check = True
         df = pd.read_feather('data/outputs/June-Sept Output/output_mean_JS.ftr')
         df2 = pd.read_feather('data/outputs/June-Sept Output/output_median_JS.ftr')
         df3 = pd.read_feather('data/outputs/June-Sept Output/output_outer_JS.ftr')
-        title = '2022 Nelson Model All June - September vs Precipitation'
+        title = '2022 Nelson Model June - September vs Precipitation'
 
     elif value == 'DWD':
         check = True
         df = pd.read_feather('data/outputs/DWD output/output_syn_dwd_mean.ftr')
         df2 = pd.read_feather('data/outputs/DWD output/output_syn_dwd_median.ftr')
         df3 = pd.read_feather('data/outputs/DWD output/output_syn_dwd_outer.ftr')
-        title = 'Synthetic Dry-Wet-Dry All vs Precipitation'
+        title = 'Synthetic Dry-Wet-Dry vs Precipitation'
 
     elif value == 'WDW':
         check = True
         df = pd.read_feather('data/outputs/WDW output/output_syn_wdw_mean.ftr')
         df2 = pd.read_feather('data/outputs/WDW output/output_syn_wdw_median.ftr')
         df3 = pd.read_feather('data/outputs/WDW output/output_syn_wdw_outer.ftr')
-        title = 'Synthetic Wet-Dry-Wet All vs Precipitation'
+        title = 'Synthetic Wet-Dry-Wet vs Precipitation'
+    
+    elif value == 'HS2021JA':
+        check = False
+        df = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_1_8_Mean.csv')
+        df2 = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_1_8_Median.csv')
+        df3 = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_1_8_Outer.csv')
+        title = '2021 Nelson Model January - August vs Hotspots'
+
+    elif value == 'HS2021AD':
+        check = False
+        df = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_8_12_Mean.csv')
+        df2 = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_8_12_Median.csv')
+        df3 = pd.read_csv('data/outputs/2021 Output/hotspot/HS_2021_8_12_Outer.csv')
+        title = '2021 Nelson Model August-December vs Hotspots'
 
     else:
-        select_graph('2021JA')   
+        select_graph('2021JA') 
+
+    if check:  
     
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    fig.add_trace(
-        go.Bar(x=df['time'], y=df['precip'], name="Precip (cm)"),
-        secondary_y=True
-    )
-    fig.update_traces(width=5, opacity=0.5)
-    fig.add_trace(
-        go.Scatter(x=df['time'], y=df['1hrfm'], name="Mean 1hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df['time'], y=df['10hrfm'], name="Mean 10hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df['time'], y=df['100hrfm'], name="Mean 100hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df['time'], y=df['1000hrfm'], name="Mean 1000hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df2['time'], y=df2['1hrfm'], name="Median 1hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df2['time'], y=df2['10hrfm'], name="Median 10hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df2['time'], y=df2['100hrfm'], name="Median 100hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df2['time'], y=df2['1000hrfm'], name=" Median 1000hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df3['time'], y=df3['1hrfm'], name="Outer 1hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df3['time'], y=df3['10hrfm'], name="Outer 10hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df3['time'], y=df3['100hrfm'], name="Outer 100hrfm", opacity= .6),
-        secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(x=df3['time'], y=df3['1000hrfm'], name="Outer 1000hrfm", opacity= .6),
-        secondary_y=False
-    )
+        fig.add_trace(
+            go.Bar(x=df['time'], y=df['precip'], name="Precip (cm)"),
+            secondary_y=True
+        )
+        fig.update_traces(width=5, opacity=0.5)
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['1hrfm'], name="Mean 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['10hrfm'], name="Mean 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['100hrfm'], name="Mean 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['1000hrfm'], name="Mean 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['1hrfm'], name="Median 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['10hrfm'], name="Median 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['100hrfm'], name="Median 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['1000hrfm'], name=" Median 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['1hrfm'], name="Outer 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['10hrfm'], name="Outer 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['100hrfm'], name="Outer 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['1000hrfm'], name="Outer 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
 
-    fig.update_yaxes(title_text="<b>Nelson Model</b>", secondary_y=False)
-    fig.update_yaxes(title_text="<b>Precip (cm)</b>", secondary_y=True)
-    fig.update_xaxes(title_text="<b>Date and Time</b>")
-    fig.update_layout(title="<b>"+ title+"</b>")
+        fig.update_yaxes(title_text="<b>Nelson Model</b>", secondary_y=False)
+        fig.update_yaxes(title_text="<b>Precip (cm)</b>", secondary_y=True)
+        fig.update_xaxes(title_text="<b>Date and Time</b>")
+        fig.update_layout(title="<b>"+ title+"</b>")
 
-    return fig      
+        return fig   
+
+    else:
+
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+        fig.add_trace(
+            go.Bar(x=df['time'], y=df['modis'], name="Modis Hotspot Count"),
+            secondary_y=True
+        )
+        fig.update_traces(width=1, opacity=0.5)
+        fig.add_trace(
+            go.Bar(x=df['time'], y=df['viirs'], name="Viirs Hotspot Count"),
+            secondary_y=True
+        )
+        fig.update_traces(width=1, opacity=0.5)
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['1hrfm'], name="Mean 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['10hrfm'], name="Mean 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['100hrfm'], name="Mean 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df['time'], y=df['1000hrfm'], name="Mean 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['1hrfm'], name="Median 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['10hrfm'], name="Median 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['100hrfm'], name="Median 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df2['time'], y=df2['1000hrfm'], name=" Median 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['1hrfm'], name="Outer 1hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['10hrfm'], name="Outer 10hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['100hrfm'], name="Outer 100hrfm", opacity= .6),
+            secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(x=df3['time'], y=df3['1000hrfm'], name="Outer 1000hrfm", opacity= .6),
+            secondary_y=False
+        )
+
+        fig.update_yaxes(title_text="<b>Nelson Model</b>", secondary_y=False)
+        fig.update_yaxes(title_text="<b>Precip (cm)</b>", secondary_y=True)
+        fig.update_xaxes(title_text="<b>Date and Time</b>")
+        fig.update_layout(title="<b>"+ title+"</b>")
+
+        return fig
+
 
 # This sets the server ip and port. As well as enables debugging, which is needed to force reload when feather files change
 if __name__ == '__main__':
