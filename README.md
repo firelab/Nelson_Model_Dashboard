@@ -1,4 +1,5 @@
 # Nelson_Model_Dashboard
+This Dashboard was created to display the Nelson Model results as graphs over a series of time. 
 
 Running Nelson Model Dashboard with Docker
 
